@@ -15,11 +15,14 @@ gem 'puma', '~> 5.0'
 # Robocop for linting
 gem 'rubocop', '>= 1.0', '< 2.0'
 
+# dotenv for env variables
+gem 'dotenv'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
+gem 'redis', '~> 4.0'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -44,6 +47,10 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker'
   gem 'rspec-rails', '~> 6.0'
+end
+
+group :test do
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 group :development do
