@@ -65,5 +65,5 @@ Rails.application.configure do
 
   config.hosts << "localhost"
   config.hosts << "127.0.0.1"
-  config.hosts << "real-time-search-engine.netlify.app/"
+  config.hosts << "real-time-search-engine.netlify.app"
 end
