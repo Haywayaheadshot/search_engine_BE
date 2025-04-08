@@ -33,16 +33,16 @@ class AnalyticsPresenter
     end
 
     word_counts.select { |_word, count| count > 1 }
-               .sort_by { |_word, count| -count }
-               .to_h
+      .sort_by { |_word, count| -count }
+      .to_h
   end
 
   def most_searched_queries
     @logs.map(&:search_query)
-         .group_by(&:query)
-         .transform_values(&:count)
-         .sort_by { |_query, count| -count }
-         .to_h
+      .group_by(&:query)
+      .transform_values(&:count)
+      .sort_by { |_query, count| -count }
+      .to_h
   end
 
   def date_from(datetime)
