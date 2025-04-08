@@ -1,6 +1,6 @@
 module Api
   module V1
-    class SearchController < ApplicationController
+    class SearchController < BaseController
       before_action :validate_query, only: :create
       before_action :validate_ip, only: :create
 
@@ -16,7 +16,10 @@ module Api
       private
 
       def validate_query
- 
+        return unless query.blank? || query.length < 3
+
+        render json: { error: 'Invalid query. Query must be at least 3 characters long.' },
+               status: :bad_request and return
       end
 
       def query
