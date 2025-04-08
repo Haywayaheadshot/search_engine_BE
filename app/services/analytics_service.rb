@@ -1,7 +1,7 @@
 class AnalyticsService
   STOP_WORDS = %w[
     a an the and or but is to in of for on at by with from as if then
-    how why what when
+    how why what when this which
   ].freeze
 
   def self.record_search(query, ip)
