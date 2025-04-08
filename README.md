@@ -27,7 +27,11 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL: [Live Demo](https://real-time-search-engine.netlify.app/)
+- Live Site URL
+  > [FrontEnd Live Site](https://real-time-search-engine.netlify.app/)
+  > [Backend Live Site](https://searchenginebe-production.up.railway.app/api/v1/analytics)
+
+- Live Demo Vide0: [Live Demo](https://youtu.be/2Yu0tU-4PYo)
 
 ## My process
 
@@ -47,16 +51,16 @@ Users should be able to:
 
 >### Setup
 
-- On the front-end. Development branch name: dev
+- On the front-end.
   > `cd search_engine_FE`
   > npm install
   > npm start
-- on the back-end. Development branch name: dev
+- on the back-end.
   > `cd search_engine_BE`
   > bundle install
   > rails s
 - Deployment branch name: mvp_deployment
-
+- Development branch name: dev
 
 ### To run tests
 
