@@ -47,16 +47,16 @@ Users should be able to:
 
 >### Setup
 
-- On the front-end.
+- On the front-end. Development branch name: dev
   > `cd search_engine_FE`
   > npm install
   > npm start
-- on the back-end.
+- on the back-end. Development branch name: dev
   > `cd search_engine_BE`
   > bundle install
   > rails s
 - Deployment branch name: mvp_deployment
-- Development branch name: dev
+
 
 ### To run tests
 
