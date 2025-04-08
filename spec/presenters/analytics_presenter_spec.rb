@@ -1,34 +1,40 @@
 require 'rails_helper'
 
 RSpec.describe AnalyticsPresenter do
-  let!(:search_query1) do
-    sq = SearchQuery.create!(query: 'Hello+world', content: 'Hello world', count: 3)
-    SearchLog.create!(search_query: sq, words: %w[hello world], ip: '127.0.0.1')
-    SearchLog.create!(search_query: sq, words: %w[hello world], ip: '127.0.0.2')
-    sq
-  end
-
-  let!(:search_query2) do
-    sq = SearchQuery.create!(query: 'What+is+the+best+test', content: 'What is the best test', count: 2)
-    SearchLog.create!(search_query: sq, words: %w[best test], ip: '127.0.0.3')
-    sq
-  end
-
-  subject { AnalyticsPresenter.new([search_query1, search_query2]).as_json }
-
-  it 'returns an array of hashes with the expected keys' do
-    subject.each do |record|
-      expect(record).to include('content', 'count', 'words', 'ips')
+  describe '#as_json' do
+    let(:search_query) do
+      SearchQuery.create!(query: 'hello', content: 'Hello world', count: 2, created_at: Time.new(2024, 1, 1, 12, 0))
     end
-  end
 
-  it 'aggregates words with counts correctly' do
-    expect(subject.first['words']).to eq({ 'hello' => 2, 'world' => 2 })
-    expect(subject.last['words']).to eq({ 'best' => 1, 'test' => 1 })
-  end
+    let!(:log1) { SearchLog.create!(search_query: search_query, words: %w[hello world], ip: '192.168.1.1') }
+    let!(:log2) { SearchLog.create!(search_query: search_query, words: %w[hello test], ip: '192.168.1.1') }
 
-  it 'aggregates unique IPs correctly' do
-    expect(subject.first['ips']).to match_array(['127.0.0.1', '127.0.0.2'])
-    expect(subject.last['ips']).to eq(['127.0.0.3'])
+    subject { described_class.new([log1, log2]).as_json }
+
+    it 'returns the correct IP' do
+      expect(subject[:ip]).to eq('192.168.1.1')
+    end
+
+    it 'returns total_logs count' do
+      expect(subject[:total_logs]).to eq(2)
+    end
+
+    it 'returns most_searched_words with duplicates only' do
+      expect(subject[:most_searched_words]).to eq({ 'hello' => 2 })
+    end
+
+    it 'returns most_searched_queries with correct frequency' do
+      expect(subject[:most_searched_queries]).to eq({ 'hello' => 2 })
+    end
+
+    it 'returns grouped queries with correct fields' do
+      query_data = subject[:queries].first
+
+      expect(query_data['query']).to eq('hello')
+      expect(query_data['content']).to eq('Hello world')
+      expect(query_data['count']).to eq(2)
+      expect(query_data['ip']).to eq('192.168.1.1')
+      expect(query_data['date']).to eq('2024-01-01 12:00')
+    end
   end
 end

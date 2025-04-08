@@ -1,21 +1,11 @@
 module Api
   module V1
-    class SearchController < ApplicationController
+    class SearchController < BaseController
       before_action :validate_query, only: :create
-
-      def index
-        search_queries = SearchQuery.order(created_at: :desc).limit(10)
-        presenter = AnalyticsPresenter.new(search_queries)
-        render json: presenter.as_json, status: :ok
-      rescue StandardError => e
-        Rails.logger.error("Analytics retrieval error: #{e.message}")
-        render json: { error: 'Failed to retrieve analytics. Please try again later.' },
-               status: :internal_server_error
-      end
 
       def create
         AnalyticsService.record_search(query, ip)
-        render json: { message: 'Search recorded successfully.' }, status: :ok
+        render json: { message: 'Search recorded successfully.', status: 200 }, status: :ok
       rescue StandardError => e
         Rails.logger.error("Search error: #{e.message}")
         render json: { error: 'Search failed. Please try again later.' },
@@ -33,10 +23,6 @@ module Api
 
       def query
         params[:q]
-      end
-
-      def ip
-        params[:ip] || request.remote_ip
       end
     end
   end

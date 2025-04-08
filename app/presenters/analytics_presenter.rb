@@ -1,29 +1,51 @@
 class AnalyticsPresenter
-  def initialize(search_queries)
-    @search_queries = search_queries
+  def initialize(logs)
+    @logs = logs
   end
 
   def as_json(_options = {})
-    @search_queries.map do |sq|
-      {
-        'content' => sq.content,
-        'count' => sq.count,
-        'words' => aggregated_words(sq),
-        'ips' => aggregated_ips(sq)
-      }
-    end
+    {
+      ip: @logs.first&.ip,
+      total_logs: @logs.size,
+      most_searched_words: most_searched_words,
+      most_searched_queries: most_searched_queries,
+      queries: grouped_queries
+    }
   end
 
   private
 
-  def aggregated_words(search_query)
-    all_words = search_query.search_logs.pluck(:words).flatten
-    all_words.each_with_object(Hash.new(0)) do |word, counts|
-      counts[word] += 1
+  def grouped_queries
+    @logs.group_by(&:search_query).map do |search_query, logs|
+      {
+        'query' => search_query.query,
+        'content' => search_query.content,
+        'count' => search_query.count,
+        'ip' => logs.first.ip,
+        'date' => date_from(search_query.created_at)
+      }
     end
   end
 
-  def aggregated_ips(search_query)
-    search_query.search_logs.pluck(:ip).uniq
+  def most_searched_words
+    word_counts = @logs.flat_map(&:words).each_with_object(Hash.new(0)) do |word, hash|
+      hash[word] += 1
+    end
+
+    word_counts.select { |_word, count| count > 1 }
+               .sort_by { |_word, count| -count }
+               .to_h
+  end
+
+  def most_searched_queries
+    @logs.map(&:search_query)
+         .group_by(&:query)
+         .transform_values(&:count)
+         .sort_by { |_query, count| -count }
+         .to_h
+  end
+
+  def date_from(datetime)
+    datetime.strftime('%Y-%m-%d %H:%M')
   end
 end
