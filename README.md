@@ -55,6 +55,8 @@ Users should be able to:
   > `cd search_engine_BE`
   > bundle install
   > rails s
+- Deployment branch name: mvp_deployment
+- Development branch name: dev
 
 ### To run tests
 
@@ -89,3 +91,4 @@ Users should be able to:
 ## Acknowledgments
 
 - Thanks to Microverse for knowledge impacted.
+- Thanks to [Railway.app](http://railway.app/) and [Netlify](https://www.netlify.com/) for deployment enviroments.
