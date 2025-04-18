@@ -22,7 +22,7 @@ class AnalyticsService
   end
 
   def self.record_in_redis(query, ip)
-    redis = Redis.new
+    redis = Redis.new(url: ENV['REDIS_URL'])
     redis.incr("analytics:search_query:#{query}:count")
     redis.set("analytics:search_log:#{query}:ip", ip)
 
