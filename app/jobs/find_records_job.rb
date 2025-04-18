@@ -2,7 +2,7 @@ class FindRecordsJob < ApplicationJob
   queue_as :default
 
   def perform(query, ip)
-    content = query.gsub(/\+/, ' ')
+    content = query.gsub('+', ' ')
     puts "Query: #{query}, Ip #{ip}, Content: #{content}"
     search_query = SearchQuery.find_or_initialize_by(query: query)
     search_query.content ||= content
