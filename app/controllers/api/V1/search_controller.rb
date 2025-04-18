@@ -5,6 +5,7 @@ module Api
       before_action :validate_ip, only: :create
 
       def create
+        puts "Query: #{query}, Ip #{ip}"
         AnalyticsService.record_search(query, ip)
         render json: { message: 'Search recorded successfully.', status: 200 }, status: :ok
       rescue StandardError => e
