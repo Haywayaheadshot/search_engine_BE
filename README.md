@@ -27,11 +27,7 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL
-  > [FrontEnd Live Site](https://real-time-search-engine.netlify.app/)
-  > [Backend Live Site](https://searchenginebe-production.up.railway.app/api/v1/analytics)
-
-- Live Demo Vide0: [Live Demo](https://youtu.be/2Yu0tU-4PYo)
+- Live Demo Video: [Live Demo](https://youtu.be/2Yu0tU-4PYo)
 
 ## My process
 
